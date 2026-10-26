@@ -8,4 +8,5 @@ __pycache__/
 *.pem
 *.zip
 docs/teory/
-.claude/
+.claude/*
+!.claude/settings.json

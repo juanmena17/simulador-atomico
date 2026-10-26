@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/.env*)",
+      "Edit(**/.env*)",
+      "Write(**/.env*)",
+      "Read(**/*.pem)",
+      "Bash(rm -rf *)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git reset --hard*)",
+      "Bash(*vercel env pull*)",
+      "Bash(*prisma migrate reset*)",
+      "Bash(*prisma db push*)"
+    ],
+    "ask": [
+      "Bash(git push*)",
+      "Bash(*vercel deploy*)",
+      "Bash(*vercel env add*)",
+      "Bash(*vercel env rm*)",
+      "Bash(*prisma migrate deploy*)",
+      "Bash(*npm run db:migrar*)",
+      "Bash(*npm run db:cargar*)"
+    ]
+  }
+}
