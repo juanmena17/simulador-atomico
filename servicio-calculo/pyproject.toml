@@ -1,0 +1,13 @@
+[project]
+name = "servicio-calculo"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy",
+    "scipy",
+    "scikit-image",
+    "fastapi",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

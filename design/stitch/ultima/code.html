@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Simulador atómico | Consola Cuántica</title>
+<!-- Material Symbols & Typography -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&amp;family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#e1e1ef",
+            "surface-container-high": "#282933",
+            "secondary": "#c7fff0",
+            "outline": "#94927a",
+            "on-background": "#e1e1ef",
+            "tertiary-container": "#e9ddff",
+            "surface-variant": "#32343e",
+            "on-primary-fixed-variant": "#4a4900",
+            "on-tertiary-fixed-variant": "#5516be",
+            "on-secondary-container": "#006a5a",
+            "on-secondary": "#00382f",
+            "on-tertiary-fixed": "#23005c",
+            "on-tertiary": "#3c0091",
+            "on-surface-variant": "#cac7ae",
+            "inverse-primary": "#636100",
+            "primary": "#ffffff",
+            "on-surface": "#e1e1ef",
+            "tertiary-fixed-dim": "#d0bcff",
+            "on-primary": "#333200",
+            "outline-variant": "#494834",
+            "surface-container-low": "#191b25",
+            "error": "#ffb4ab",
+            "on-primary-container": "#696700",
+            "surface-container-lowest": "#0c0e17",
+            "error-container": "#93000a",
+            "primary-fixed-dim": "#cfcc26",
+            "on-error": "#690005",
+            "surface-container": "#1d1f29",
+            "on-error-container": "#ffdad6",
+            "background": "#08090d",
+            "primary-container": "#ece944",
+            "tertiary-fixed": "#e9ddff",
+            "on-primary-fixed": "#1d1d00",
+            "surface-tint": "#cfcc26",
+            "inverse-on-surface": "#2e303a",
+            "surface": "#11131c",
+            "on-secondary-fixed-variant": "#005144",
+            "on-secondary-fixed": "#00201a",
+            "tertiary": "#ffffff",
+            "primary-fixed": "#ece944",
+            "secondary-fixed": "#26fedc",
+            "secondary-fixed-dim": "#00dfc1",
+            "surface-dim": "#11131c",
+            "surface-bright": "#373943",
+            "surface-container-highest": "#32343e",
+            "secondary-container": "#00f2d1",
+            "on-tertiary-container": "#7342dd"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter": "1rem",
+            "space-md": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2rem",
+            "space-sm": "0.5rem",
+            "gutter-dense": "0.5rem",
+            "margin": "1.5rem",
+            "space-lg": "1.25rem"
+          },
+          "fontFamily": {
+            "code-md": ["JetBrains Mono", "monospace"],
+            "headline-md": ["Space Grotesk", "sans-serif"],
+            "display-lg": ["Space Grotesk", "sans-serif"],
+            "headline-lg": ["Space Grotesk", "sans-serif"],
+            "display-md": ["Space Grotesk", "sans-serif"],
+            "body-md": ["Newsreader", "serif"],
+            "body-lg": ["Newsreader", "serif"],
+            "body-sm": ["Newsreader", "serif"],
+            "label-sm": ["JetBrains Mono", "monospace"],
+            "code-lg": ["JetBrains Mono", "monospace"],
+            "label-md": ["JetBrains Mono", "monospace"]
+          },
+          "fontSize": {
+            "code-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["18px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "500" }],
+            "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "display-md": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "body-md": ["15px", { "lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "body-sm": ["13px", { "lineHeight": "20px", "letterSpacing": "0.015em", "fontWeight": "400" }],
+            "label-sm": ["9px", { "lineHeight": "12px", "letterSpacing": "0.12em", "fontWeight": "600" }],
+            "code-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "label-md": ["11px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Technical Grid Matrix Reticle */
+    .bg-matrix-grid {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    }
+    
+    /* Precision Scrollbar */
+    .scientific-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .scientific-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .scientific-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 2px;
+    }
+    .scientific-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #ece944;
+      box-shadow: 0 0 8px rgba(236, 233, 68, 0.5);
+    }
+
+    /* Orbital Simulation Keyframes */
+    @keyframes slow-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes counter-spin {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+    @keyframes pulse-core {
+      0%, 100% { transform: scale(1); opacity: 0.95; filter: drop-shadow(0 0 12px #f59e0b) drop-shadow(0 0 24px #ea580c); }
+      50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 18px #fbbf24) drop-shadow(0 0 32px #f97316); }
+    }
+
+    .animate-spin-slow {
+      animation: slow-spin 36s linear infinite;
+    }
+    .animate-spin-reverse {
+      animation: counter-spin 28s linear infinite;
+    }
+    .animate-spin-tilt {
+      animation: slow-spin 48s linear infinite;
+    }
+    .animate-core {
+      animation: pulse-core 4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased h-screen w-screen overflow-hidden select-none font-body-md text-body-md relative flex flex-col justify-between p-space-sm md:p-space-md">
+<!-- Deep Cosmic Canvas Background Layer with Vignette & Technical Matrix Grid -->
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-surface-container-low/40 via-surface-container-lowest to-[#050608] pointer-events-none"></div>
+<div class="absolute inset-0 bg-matrix-grid pointer-events-none opacity-80"></div>
+<!-- Subtle Ambient Glows -->
+<div class="absolute top-1/4 right-1/4 w-96 h-96 bg-primary-container/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute bottom-1/3 right-1/3 w-80 h-80 bg-secondary-container/5 rounded-full blur-3xl pointer-events-none"></div>
+<!-- 1. TOP HEADER (Precision Scientific Brutalism Bar) -->
+<header class="relative z-20 flex items-center justify-between px-space-md py-space-xs bg-surface-container-lowest/90 backdrop-blur-md border border-white/[0.06] rounded shadow-none h-12 mb-space-sm shrink-0">
+<!-- Brand Anchor & Product Identity -->
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs text-primary-container">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+<h1 class="font-headline-md text-headline-md tracking-tight text-white font-medium flex items-center gap-space-xs">
+          Simulador atómico
+        </h1>
+</div>
+<div class="h-3 w-[1px] bg-white/20"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-[0.2em] uppercase">
+        CONSOLA DE SIMULACIÓN CUÁNTICA // V1.04
+      </span>
+</div>
+<!-- Right Header Telemetry & Status Anchor -->
+<div class="flex items-center gap-space-md">
+<div class="hidden sm:flex items-center gap-2 px-space-xs py-[2px] bg-white/[0.03] border border-white/10 rounded">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary-container shadow-[0_0_6px_#00f2d1]"></span>
+<span class="font-label-sm text-label-sm text-secondary tracking-widest uppercase">ESTADO: RESONANTE</span>
+</div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant/80 border border-white/[0.06] px-space-xs py-[2px] rounded bg-surface-container-lowest">
+<span class="text-primary-container">Ψ</span>
+<span>COH: 99.98%</span>
+</div>
+<div class="text-white/60 hover:text-primary-container cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</div>
+</div>
+</header>
+<!-- 2. MAIN SPLIT INSTRUMENT VIEWPORT (100% Remaining Height, Two Columns) -->
+<main class="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-space-sm md:gap-space-md flex-1 min-h-0 w-full overflow-hidden">
+<!-- LEFT COLUMN: Tratado Teórico // Fundamentos (~42% Width -> col-span-5) -->
+<section class="md:col-span-5 flex flex-col h-full bg-surface-container-lowest/85 backdrop-blur-xl border border-white/[0.07] rounded relative overflow-hidden">
+<!-- Precision Gold Corner Reticle Notches -->
+<div class="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-primary-container/80 z-20 pointer-events-none"></div>
+<div class="absolute top-0 right-0 w-2.5 h-2.5 border-t-2 border-r-2 border-primary-container/80 z-20 pointer-events-none"></div>
+<div class="absolute bottom-0 left-0 w-2.5 h-2.5 border-b-2 border-l-2 border-primary-container/80 z-20 pointer-events-none"></div>
+<div class="absolute bottom-0 right-0 w-2.5 h-2.5 border-b-2 border-r-2 border-primary-container/80 z-20 pointer-events-none"></div>
+<!-- Left Column Header -->
+<div class="flex items-center justify-between px-space-md py-space-xs border-b border-white/[0.08] bg-white/[0.02] shrink-0">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-container text-[16px]">menu_book</span>
+<span class="font-label-md text-label-md tracking-[0.14em] text-white/90 uppercase font-semibold">
+            TRATADO TEÓRICO // FUNDAMENTOS
+          </span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-code-md">
+          REF: Q-MEC.01
+        </span>
+</div>
+<!-- Scrollable Reading Body Panel -->
+<div class="p-space-md overflow-y-auto scientific-scrollbar space-y-space-lg flex-1 pr-space-md">
+<!-- Section 1: Estructura atómica -->
+<article class="space-y-space-xs border-b border-white/[0.06] pb-space-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-white font-medium tracking-normal flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-primary-container rounded-full"></span>
+              Estructura atómica
+            </h2>
+<span class="font-label-sm text-label-sm text-outline tracking-wider font-code-md">SEC-01</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface/90 leading-relaxed font-light">
+            La materia bariónica se organiza en configuraciones atómicas gobernadas por la interacción electromagnética y la fuerza nuclear fuerte. En el baricentro del sistema reside un núcleo de densidad hipercrítica compuesto por protones y neutrones, donde se concentra más del 99.94% de la masa total inercial.
+          </p>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Rodeando esta simetría nuclear, los leptones cargados no trazan trayectorias rígidas, sino un gradiente continuo de densidades probabilísticas que satura el espacio tridimensional circundante según las condiciones de contorno cuánticas.
+          </p>
+</article>
+<!-- Section 2: Mecánica Clásica -->
+<article class="space-y-space-xs border-b border-white/[0.06] pb-space-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-white font-medium tracking-normal flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-secondary-container rounded-full"></span>
+              Mecánica Clásica
+            </h2>
+<span class="font-label-sm text-label-sm text-outline tracking-wider font-code-md">SEC-02</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface/90 leading-relaxed font-light">
+            Bajo el paradigma de Rutherford y Bohr, se concibió un análogo directo a los sistemas gravitatorios keplerianos: electrones concebidos como partículas puntuales en trayectorias elípticas estables. Sin embargo, la electrodinámica clásica impone una contradicción terminal insalvable.
+          </p>
+<div class="p-space-xs bg-surface-container-high/40 border-l-2 border-secondary-container rounded-r my-space-xs">
+<p class="font-body-sm text-body-sm text-secondary-fixed-dim italic">
+              «Toda carga acelerada en un campo coulombiano debe radiar ondas electromagnéticas continuamente (ecuación de Larmor), provocando el colapso del electrón hacia el núcleo en aproximadamente 10⁻¹¹ segundos.»
+            </p>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Este fracaso de la termodinámica y el electromagnetismo determinista precipitó la necesidad de abandonar las coordenadas deterministas de posición y momento lineal.
+          </p>
+</article>
+<!-- Section 3: Mecánica Cuántica -->
+<article class="space-y-space-xs pb-space-sm">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-white font-medium tracking-normal flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-tertiary-fixed-dim rounded-full"></span>
+              Mecánica Cuántica
+            </h2>
+<span class="font-label-sm text-label-sm text-outline tracking-wider font-code-md">SEC-03</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface/90 leading-relaxed font-light">
+            La formulación ondulatoria de Schrödinger redefine al electrón como una función de onda compleja escalada espacialmente: <span class="font-code-md text-code-md text-primary-container font-medium">Ψ(r, θ, φ)</span>. La probabilidad diferencial infinitesimal de hallar el estado en un volumen elemental se rige por la interpretación de Born.
+          </p>
+<!-- Rendered Mathematical Expression Block -->
+<div class="my-space-sm p-space-sm bg-[#0c0e17] border border-white/10 rounded flex flex-col items-center justify-center gap-1 shadow-inner">
+<div class="font-headline-md text-headline-md text-primary-container tracking-wider flex items-center gap-2">
+<span>i ℏ ∂Ψ/∂t = Ĥ Ψ</span>
+</div>
+<div class="flex items-center gap-3 text-white/50 font-label-sm text-label-sm uppercase tracking-widest pt-1 border-t border-white/5 w-full justify-center">
+<span>ECUACIÓN DE ONDA DE SCHRÖDINGER</span>
+<span>•</span>
+<span>AUTOESTADOS ESTACIONARIOS</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Las soluciones válidas representan armónicos esféricos multiplicados por funciones radiales discretas de Laguerre. Al no existir una aceleración orbital corpuscular, el estado fundamental permanece indefinidamente estacionario y estable frente a la emisión radiativa.
+          </p>
+</article>
+</div>
+<!-- Reading Dock Footer Micro-telemetry -->
+<div class="px-space-md py-1.5 border-t border-white/[0.06] bg-surface-container-lowest flex items-center justify-between text-outline text-label-sm font-label-sm">
+<span class="flex items-center gap-1 font-code-md">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+          MODELO: HIDROGENOIDE [Z=1]
+        </span>
+<span class="font-code-md tracking-wider">CANAL: DE BROGLIE // LECTURA ACTIVA</span>
+</div>
+</section>
+<!-- RIGHT COLUMN: Stacked Simulation Viewport + Telemetry Readout (~58% Width -> col-span-7) -->
+<section class="md:col-span-7 flex flex-col h-full gap-space-sm min-h-0">
+<!-- Top Viewport: Full 3D Hamiltonian Simulation Engine -->
+<div class="relative flex-1 bg-surface-container-lowest/95 border border-white/[0.08] rounded overflow-hidden flex items-center justify-center min-h-0 shadow-[inset_0_0_80px_rgba(0,0,0,0.9)]">
+<!-- Precision Corner L-Brackets -->
+<div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-secondary-container/90 z-20 pointer-events-none"></div>
+<div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-secondary-container/90 z-20 pointer-events-none"></div>
+<div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-secondary-container/90 z-20 pointer-events-none"></div>
+<div class="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-secondary-container/90 z-20 pointer-events-none"></div>
+<!-- HUD Overlay: Top-Left Header Badges -->
+<div class="absolute top-space-sm left-space-sm z-30 flex flex-col gap-1.5 pointer-events-none">
+<div class="flex items-center gap-2 px-space-xs py-1 bg-[#141726]/80 backdrop-blur-md border border-white/15 rounded">
+<span class="w-1.5 h-1.5 bg-primary-container rounded-full animate-ping"></span>
+<span class="font-label-sm text-label-sm text-white tracking-widest uppercase">
+              VISTA: ISOSUPERFICIE PROBABILÍSTICA
+            </span>
+</div>
+<div class="font-code-md text-label-sm text-outline tracking-wider bg-black/60 px-2 py-0.5 rounded border border-white/5 w-fit">
+            Ψ*(r) · Ψ(r) dV = 1.000
+          </div>
+</div>
+<!-- HUD Overlay: Top-Right Technical Coordinates -->
+<div class="absolute top-space-sm right-space-sm z-30 flex items-center gap-space-xs pointer-events-none">
+<div class="flex items-center gap-3 px-space-sm py-1 bg-[#141726]/80 backdrop-blur-md border border-white/15 rounded font-code-md text-label-sm text-on-surface tracking-wider">
+<span><strong class="text-primary-container">X:</strong> 00°</span>
+<span><strong class="text-secondary-container">Y:</strong> 45°</span>
+<span><strong class="text-tertiary-fixed-dim">Z:</strong> 12°</span>
+</div>
+<div class="flex items-center gap-1.5 px-space-xs py-1 bg-surface-container-high/60 border border-secondary-container/40 rounded">
+<span class="material-symbols-outlined text-[13px] text-secondary-container animate-spin">refresh</span>
+<span class="font-label-sm text-label-sm text-secondary tracking-widest uppercase">LIVE 60 FPS</span>
+</div>
+</div>
+<!-- Central Quantum Particle & Orbital Visualizer Engine -->
+<div class="relative w-full h-full flex items-center justify-center p-space-md">
+<!-- Deep Spatial Field Concentric Grid Rings -->
+<div class="absolute w-[460px] h-[460px] rounded-full border border-white/[0.04] pointer-events-none"></div>
+<div class="absolute w-[360px] h-[360px] rounded-full border border-white/[0.05] pointer-events-none"></div>
+<div class="absolute w-[260px] h-[260px] rounded-full border border-dashed border-white/[0.08] pointer-events-none"></div>
+<!-- Coordinate Crosshairs -->
+<div class="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none"></div>
+<div class="absolute h-full w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent pointer-events-none"></div>
+<!-- Luminous Quantum Wave Orbitals (Layered Concentric Ellipses) -->
+<div class="relative w-[340px] h-[340px] md:w-[420px] md:h-[420px] flex items-center justify-center">
+<!-- Ring 1: Primary Gold Ellipse (Azimuthal Mode) -->
+<div class="absolute w-[94%] h-[42%] rounded-[100%] border border-[#ece944]/60 shadow-[0_0_15px_rgba(236,233,68,0.35)] animate-spin-slow rotate-[25deg]"></div>
+<!-- Ring 2: Red-Orange Core Transitions (Harmonic Level 2) -->
+<div class="absolute w-[86%] h-[50%] rounded-[100%] border border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.25)] animate-spin-reverse rotate-[70deg]"></div>
+<!-- Ring 3: Deep Red / Coral Ellipse (Zeeman Splitting Shift) -->
+<div class="absolute w-[78%] h-[32%] rounded-[100%] border border-rose-500/40 shadow-[0_0_12px_rgba(244,63,94,0.3)] animate-spin-tilt rotate-[-40deg]"></div>
+<!-- Ring 4: Cyan Orbital Envelope (Coherent Field Superposition) -->
+<div class="absolute w-[68%] h-[68%] rounded-[100%] border border-cyan-400/35 shadow-[0_0_25px_rgba(6,182,212,0.25)] animate-spin-slow rotate-[110deg]"></div>
+<!-- Ring 5: Violet Ethereal Wave Ring -->
+<div class="absolute w-[56%] h-[26%] rounded-[100%] border border-purple-500/45 shadow-[0_0_18px_rgba(168,85,247,0.3)] animate-spin-reverse rotate-[145deg]"></div>
+<!-- Ring 6: Tight Gold Incline Resonator -->
+<div class="absolute w-[44%] h-[80%] rounded-[100%] border border-primary-container/40 shadow-[0_0_10px_rgba(236,233,68,0.2)] animate-spin-tilt rotate-[-15deg]"></div>
+<!-- Core Field Super-Glow (Warm Amber & Radiant Plasma) -->
+<div class="absolute w-24 h-24 rounded-full bg-radial from-amber-400/30 via-orange-600/15 to-transparent blur-md pointer-events-none"></div>
+<!-- Dense Intensely Glowing Core Nucleus -->
+<div class="relative z-10 flex items-center justify-center">
+<!-- Halo bloom -->
+<div class="absolute w-12 h-12 rounded-full bg-[#ea580c] blur-sm opacity-80 animate-core"></div>
+<div class="absolute w-7 h-7 rounded-full bg-[#f59e0b] blur-[2px] opacity-90 animate-pulse"></div>
+<!-- Core sphere -->
+<div class="w-4 h-4 rounded-full bg-gradient-to-tr from-[#ea580c] via-[#fbbf24] to-[#ffffff] shadow-[0_0_12px_#fbbf24,0_0_28px_#ea580c]"></div>
+</div>
+<!-- Virtual Wave Node Points -->
+<div class="absolute top-[28%] left-[22%] w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_6px_#ece944] animate-ping"></div>
+<div class="absolute bottom-[32%] right-[24%] w-1.5 h-1.5 rounded-full bg-secondary-container shadow-[0_0_6px_#00f2d1]"></div>
+</div>
+</div>
+<!-- HUD Overlay: Bottom Viewport Ticks & Scale -->
+<div class="absolute bottom-space-xs left-space-sm right-space-sm z-30 flex items-center justify-between pointer-events-none text-outline font-label-sm text-label-sm font-code-md border-t border-white/[0.05] pt-1">
+<div class="flex items-center gap-2">
+<span class="text-white/60">RADIO DE BOHR: a₀ = 5.29177 × 10⁻¹¹ m</span>
+</div>
+<div class="flex items-center gap-3">
+<span>POTENCIAL: -13.6 eV</span>
+<span class="text-secondary-container">ESCALA: 100 pm</span>
+</div>
+</div>
+</div>
+<!-- Bottom Readout Panel: Compact Segmented Telemetry Dock -->
+<div class="h-24 bg-surface-container-lowest/90 backdrop-blur-md border border-white/[0.08] rounded p-space-xs flex items-center justify-between relative shrink-0">
+<!-- Precision Corner Indicators -->
+<div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary-container/60 pointer-events-none"></div>
+<div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary-container/60 pointer-events-none"></div>
+<div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary-container/60 pointer-events-none"></div>
+<div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary-container/60 pointer-events-none"></div>
+<!-- Quantum Numbers Readout Matrix -->
+<div class="grid grid-cols-3 gap-space-xs w-full h-full">
+<!-- Quantum Number: n (Principal) -->
+<div class="flex flex-col justify-between p-space-xs bg-[#11131c]/70 border border-white/[0.06] rounded hover:border-primary-container/40 transition-colors">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-code-md tracking-wider uppercase">NÚMERO PRINCIPAL</span>
+<span class="text-[9px] font-code-md text-primary-container/80 px-1 rounded bg-primary-container/10">CAPA K</span>
+</div>
+<div class="flex items-baseline justify-between px-1">
+<span class="font-headline-lg text-headline-lg font-code-md text-primary-container font-semibold tracking-tight">n = 0</span>
+<span class="font-label-sm text-label-sm text-white/40 font-code-md">[ENERGÍA BASE]</span>
+</div>
+<div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-[25%] shadow-[0_0_6px_#ece944]"></div>
+</div>
+</div>
+<!-- Quantum Number: l (Azimutal / Momento Angular) -->
+<div class="flex flex-col justify-between p-space-xs bg-[#11131c]/70 border border-white/[0.06] rounded hover:border-secondary-container/40 transition-colors">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-code-md tracking-wider uppercase">AZIMUTAL // ORBITAL</span>
+<span class="text-[9px] font-code-md text-secondary-container/80 px-1 rounded bg-secondary-container/10">ORBITAL s</span>
+</div>
+<div class="flex items-baseline justify-between px-1">
+<span class="font-headline-lg text-headline-lg font-code-md text-secondary-container font-semibold tracking-tight">l = 0</span>
+<span class="font-label-sm text-label-sm text-white/40 font-code-md">[SIMETRÍA ESFÉRICA]</span>
+</div>
+<div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full w-[10%] shadow-[0_0_6px_#00f2d1]"></div>
+</div>
+</div>
+<!-- Quantum Number: m (Magnético) -->
+<div class="flex flex-col justify-between p-space-xs bg-[#11131c]/70 border border-white/[0.06] rounded hover:border-tertiary-fixed-dim/40 transition-colors">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-code-md tracking-wider uppercase">MAGNÉTICO // PROYECCIÓN</span>
+<span class="text-[9px] font-code-md text-tertiary-fixed-dim px-1 rounded bg-purple-500/10">B-FIELD = 0</span>
+</div>
+<div class="flex items-baseline justify-between px-1">
+<span class="font-headline-lg text-headline-lg font-code-md text-tertiary-fixed-dim font-semibold tracking-tight">m = 0</span>
+<span class="font-label-sm text-label-sm text-white/40 font-code-md">[NO DEGENERADO]</span>
+</div>
+<div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-purple-400 h-full w-[50%] shadow-[0_0_6px_#a855f7]"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

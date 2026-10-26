@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+html {
+  font-size: clamp(13px, 0.8333vw, 22px);
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+@theme {
+  --color-neutral-page: #DCDCE0;
+  --color-neutral-surface: #F2F2F4;
+  --color-neutral-surface-sub: #EAEAEB;
+  --color-neutral-border: #C4C4CA;
+  --color-neutral-text-primary: #1F1F23;
+  --color-neutral-text-secondary: #4E4E55;
+  --color-quantum-gold: #b58900;
+  --color-quantum-cyan: #008779;
+  --color-quantum-violet: #6b21a8;
+  --font-code-md: "JetBrains Mono", monospace;
+  --font-headline-lg: "Space Grotesk", sans-serif;
+  --font-body-md: "Newsreader", serif;
+  --font-label-md: "JetBrains Mono", monospace;
+  --font-headline-md: "Space Grotesk", sans-serif;
+  --font-body-lg: "Newsreader", serif;
+  --radius-sm: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+}
+
+body {
+  background: #DCDCE0;
+  color: #1F1F23;
+}
+
+.bg-matrix-grid {
+  background-size: 2rem 2rem;
+  background-image: linear-gradient(to right, rgb(0 0 0 / 4%) 1px, transparent 1px), linear-gradient(to bottom, rgb(0 0 0 / 4%) 1px, transparent 1px);
+}

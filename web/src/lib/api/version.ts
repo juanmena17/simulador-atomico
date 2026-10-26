@@ -1,0 +1,1 @@
+export const VERSION_ALGORITMO_VIGENTE = "1";

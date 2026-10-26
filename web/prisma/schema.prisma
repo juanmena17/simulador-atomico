@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model OrbitalCalculado {
+  n            Int
+  l            Int
+  version      String
+  datos        Json
+  creadoEn     DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  @@id([n, l, version])
+}
+
+model SeccionTeorica {
+  clave        String   @id
+  orden        Int      @unique
+  titulo       String
+  contenido    String   @db.Text
+  actualizadoEn DateTime @updatedAt
+}

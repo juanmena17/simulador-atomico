@@ -1,0 +1,12 @@
+import { RAZON_TIEMPO_TOTAL } from "../seleccion/cliente-api";
+export type SeccionContenido = { clave: string; orden: number; titulo: string; contenido: string };
+type FetchFn = typeof fetch;
+export class ErrorConsultaContenido extends Error { readonly codigo: string; constructor(codigo: string) { super(`No se pudo consultar el contenido (${codigo}).`); this.name = "ErrorConsultaContenido"; this.codigo = codigo; } }
+function codigoDeError(valor: unknown): string { if (typeof valor !== "object" || valor === null || !("error" in valor)) return "respuesta_invalida"; const error = (valor as { error?: unknown }).error; if (typeof error !== "object" || error === null || !("codigo" in error)) return "respuesta_invalida"; const codigo = (error as { codigo?: unknown }).codigo; return typeof codigo === "string" && codigo.length > 0 ? codigo : "respuesta_invalida"; }
+function esSeccion(valor: unknown): valor is SeccionContenido { if (typeof valor !== "object" || valor === null) return false; const seccion = valor as Partial<SeccionContenido>; return typeof seccion.clave === "string" && seccion.clave.trim().length > 0 && typeof seccion.orden === "number" && Number.isInteger(seccion.orden) && typeof seccion.titulo === "string" && seccion.titulo.trim().length > 0 && typeof seccion.contenido === "string"; }
+export async function pedirContenido(opciones: { fetchFn?: FetchFn; signal?: AbortSignal } = {}): Promise<SeccionContenido[]> {
+  const fetchFn = opciones.fetchFn ?? fetch; const signal = opciones.signal; const errorPorAborto = () => new ErrorConsultaContenido(signal?.reason === RAZON_TIEMPO_TOTAL ? "tiempo_agotado_total" : "tiempo_agotado"); if (signal?.aborted) throw errorPorAborto();
+  let respuesta: Response; try { respuesta = await fetchFn("/api/contenido", { method: "GET", ...(signal ? { signal } : {}) }); } catch { if (signal?.aborted) throw errorPorAborto(); throw new ErrorConsultaContenido("red"); }
+  let cuerpo: unknown; try { cuerpo = await respuesta.json(); } catch { if (signal?.aborted) throw errorPorAborto(); throw new ErrorConsultaContenido("respuesta_invalida"); }
+  if (respuesta.status !== 200) throw new ErrorConsultaContenido(codigoDeError(cuerpo)); if (!Array.isArray(cuerpo) || !cuerpo.every(esSeccion)) throw new ErrorConsultaContenido("respuesta_invalida"); const ordenes = new Set(cuerpo.map((seccion) => seccion.orden)); if (ordenes.size !== cuerpo.length) throw new ErrorConsultaContenido("respuesta_invalida"); return [...cuerpo].sort((a, b) => a.orden - b.orden);
+}
