@@ -24,6 +24,18 @@ El panel obtiene sus secciones desde `/api/contenido`; la API usa los datos carg
 
 El contenido admite Markdown y fórmulas entre `$...$` o `$$...$$`. No se permite HTML crudo.
 
+## Prueba E2E con Playwright
+
+La prueba `web/test/flujo-critico.spec.ts` recorre el flujo crítico en Edge: panel teórico con fórmulas, orbital inicial, cambio de `n` y `l`, y combinaciones bloqueadas. Es de solo lectura.
+
+```bash
+npm run test:e2e                      # levanta la app local (build + start en el puerto 3600); requiere DATABASE_URL, URL_SERVICIO_CALCULO y SECRETO_SERVICIO en el entorno
+E2E_BASE_URL=https://simulador-atomico-web.vercel.app npm run test:e2e   # contra el sitio desplegado, sin servidor local
+npm run test:e2e:informe              # abre el informe HTML
+```
+
+Los selectores usan coincidencia exacta (`exact: true`): sin ella Playwright compara por subcadena y una prueba puede pasar aunque el texto esté mal.
+
 ## Comandos del entorno
 
 Para las rutas de API define en el entorno del terminal `URL_SERVICIO_CALCULO` y `SECRETO_SERVICIO`. En local, usa `URL_SERVICIO_CALCULO=http://127.0.0.1:8000` y el mismo secreto configurado en el servicio; nunca guardes el secreto en el repositorio.

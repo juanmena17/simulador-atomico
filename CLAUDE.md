@@ -38,6 +38,7 @@ npm run dev
 npm test
 npm run lint
 npm run build
+npm run test:e2e   # Playwright (Edge); E2E_BASE_URL para probar el sitio desplegado
 ```
 
 Base local y Prisma:
